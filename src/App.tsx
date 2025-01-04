@@ -89,7 +89,14 @@ const FoodTracker = () => {
 
   const [weekStart, setWeekStart] = useState<string>(() => {
     const savedWeekStart = localStorage.getItem("trackerWeekStart");
-    return savedWeekStart || new Date().toLocaleDateString();
+    if (savedWeekStart) return savedWeekStart;
+
+    const today = new Date();
+    const dayOfWeek = today.getDay(); // 0 is Sunday, 1 is Monday, etc.
+    const daysFromMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+    const monday = new Date(today);
+    monday.setDate(today.getDate() - daysFromMonday);
+    return monday.toLocaleDateString();
   });
 
   const [showReport, setShowReport] = useState(false);
