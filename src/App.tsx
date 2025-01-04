@@ -230,95 +230,99 @@ const FoodTracker = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto p-4">
-      <Card className="mb-4">
-        <CardHeader>
-          <CardTitle className="text-xl">
-            Weekly Fruit & Veggie Tracker
-            <div className="text-sm font-normal mt-1">
-              Week starting: {weekStart}
+    <div className="min-h-full w-full">
+      <div className="max-w-md mx-auto p-4">
+        <Card className="mb-4">
+          <CardHeader>
+            <CardTitle className="text-xl">
+              Weekly Fruit & Veggie Tracker
+              <div className="text-sm font-normal mt-1">
+                Week starting: {weekStart}
+              </div>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center justify-between mb-4">
+              <Badge variant="outline" className="text-lg">
+                {eatenFoods.size}/30
+              </Badge>
+              <div className="text-sm text-gray-600">
+                {getProgressMessage()}
+              </div>
             </div>
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex items-center justify-between mb-4">
-            <Badge variant="outline" className="text-lg">
-              {eatenFoods.size}/30
-            </Badge>
-            <div className="text-sm text-gray-600">{getProgressMessage()}</div>
-          </div>
 
-          <form onSubmit={addNewFood} className="flex gap-2 mb-4">
-            <Input
-              type="text"
-              value={newFood}
-              onChange={(e) => setNewFood(e.target.value)}
-              onKeyDown={handleKeyPress}
-              placeholder="Add new fruit or vegetable"
-              className="flex-1"
-            />
-            <Button type="submit" size="sm">
-              <Plus className="w-4 h-4" />
-            </Button>
-          </form>
+            <form onSubmit={addNewFood} className="flex gap-2 mb-4">
+              <Input
+                type="text"
+                value={newFood}
+                onChange={(e) => setNewFood(e.target.value)}
+                onKeyDown={handleKeyPress}
+                placeholder="Add new fruit or vegetable"
+                className="flex-1"
+              />
+              <Button type="submit" size="sm">
+                <Plus className="w-4 h-4" />
+              </Button>
+            </form>
 
-          <Tabs defaultValue="uneaten" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="uneaten">To Eat</TabsTrigger>
-              <TabsTrigger value="eaten">Eaten</TabsTrigger>
-            </TabsList>
+            <Tabs defaultValue="uneaten" className="w-full">
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="uneaten">To Eat</TabsTrigger>
+                <TabsTrigger value="eaten">Eaten</TabsTrigger>
+              </TabsList>
 
-            <TabsContent value="uneaten">
-              <div className="grid grid-cols-2 gap-2">
-                {foods
-                  .filter((food) => !eatenFoods.has(food))
-                  .map((food) => (
-                    <button
-                      key={food}
-                      onClick={() => toggleFood(food)}
-                      className="flex items-center justify-between p-2 rounded border hover:bg-gray-50"
-                    >
-                      <span>{food}</span>
-                      <XCircle className="w-5 h-5 text-gray-300" />
-                    </button>
-                  ))}
-              </div>
-            </TabsContent>
+              <TabsContent value="uneaten">
+                <div className="grid grid-cols-2 gap-2">
+                  {foods
+                    .filter((food) => !eatenFoods.has(food))
+                    .map((food) => (
+                      <button
+                        key={food}
+                        onClick={() => toggleFood(food)}
+                        className="flex items-center justify-between p-2 rounded border hover:bg-gray-50"
+                      >
+                        <span>{food}</span>
+                        <XCircle className="w-5 h-5 text-gray-300" />
+                      </button>
+                    ))}
+                </div>
+              </TabsContent>
 
-            <TabsContent value="eaten">
-              <div className="grid grid-cols-2 gap-2">
-                {foods
-                  .filter((food) => eatenFoods.has(food))
-                  .map((food) => (
-                    <button
-                      key={food}
-                      onClick={() => toggleFood(food)}
-                      className="flex items-center justify-between p-2 rounded border hover:bg-gray-50"
-                    >
-                      <span>{food}</span>
-                      <CheckCircle2 className="w-5 h-5 text-green-500" />
-                    </button>
-                  ))}
-              </div>
-            </TabsContent>
-          </Tabs>
-        </CardContent>
-      </Card>
+              <TabsContent value="eaten">
+                <div className="grid grid-cols-2 gap-2">
+                  {foods
+                    .filter((food) => eatenFoods.has(food))
+                    .map((food) => (
+                      <button
+                        key={food}
+                        onClick={() => toggleFood(food)}
+                        className="flex items-center justify-between p-2 rounded border hover:bg-gray-50"
+                      >
+                        <span>{food}</span>
+                        <CheckCircle2 className="w-5 h-5 text-green-500" />
+                      </button>
+                    ))}
+                </div>
+              </TabsContent>
+            </Tabs>
+          </CardContent>
+        </Card>
 
-      {showReport && getWeeklyReport()}
+        {showReport && getWeeklyReport()}
 
-      <div className="mt-4 text-center text-gray-500">
-        <ArrowDownCircle className="w-6 h-6 mx-auto mb-1" />
-        Install this PWA for offline use
+        <div className="mt-4 text-center text-gray-500">
+          <ArrowDownCircle className="w-6 h-6 mx-auto mb-1" />
+          Install this PWA for offline use
+        </div>
+
+        {toast && (
+          <Toast
+            title={toast.title}
+            message={toast.message}
+            onClose={() => setToast(null)}
+          />
+        )}
       </div>
-
-      {toast && (
-        <Toast
-          title={toast.title}
-          message={toast.message}
-          onClose={() => setToast(null)}
-        />
-      )}
     </div>
   );
 };
